@@ -1,4 +1,4 @@
 package com.example.notification.service;
 
-public class NotificationConsumer {
+public class UserService {
 }

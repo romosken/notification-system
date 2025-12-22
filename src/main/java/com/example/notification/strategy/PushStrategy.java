@@ -6,6 +6,11 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class PushStrategy implements NotificationStrategy {
-    public void send(User user, String msg) { System.out.println("[PUSH] To: " + user.name() + " | " + msg); }
-    public Channel getChannel() { return Channel.PUSH; }
+    public void send(User user, String msg) {
+        System.out.println("[PUSH] To: " + user.getName() + " | " + msg);
+    }
+
+    public Channel getChannel() {
+        return Channel.PUSH;
+    }
 }

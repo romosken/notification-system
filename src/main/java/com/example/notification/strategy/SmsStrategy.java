@@ -6,6 +6,11 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class SmsStrategy implements NotificationStrategy {
-    public void send(User user, String msg) { System.out.println("[SMS] To: " + user.phoneNumber() + " | " + msg); }
-    public Channel getChannel() { return Channel.SMS; }
+    public void send(User user, String msg) {
+        System.out.println("[SMS] To: " + user.getPhoneNumber() + " | " + msg);
+    }
+
+    public Channel getChannel() {
+        return Channel.SMS;
+    }
 }

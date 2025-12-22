@@ -1,7 +1,6 @@
 package com.example.notification.strategy;
 
 import com.example.notification.model.Channel;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
@@ -20,20 +19,10 @@ public class NotificationStrategyFactory {
         }
     }
 
-    /**
-     * Register a notification strategy
-     * @param strategy Strategy to register
-     */
     public void registerStrategy(NotificationStrategy strategy) {
         strategies.put(strategy.getChannel(), strategy);
     }
 
-    /**
-     * Get strategy for a specific channel
-     * @param channel Channel type
-     * @return NotificationStrategy for the channel
-     * @throws IllegalArgumentException if no strategy found for the channel
-     */
     public NotificationStrategy getStrategy(Channel channel) {
         NotificationStrategy strategy = strategies.get(channel);
         if (strategy == null) {
@@ -42,10 +31,6 @@ public class NotificationStrategyFactory {
         return strategy;
     }
 
-    /**
-     * Get all registered channels
-     * @return Set of supported channels
-     */
     public Set<Channel> getSupportedChannels() {
         return strategies.keySet();
     }

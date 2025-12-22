@@ -1,8 +1,7 @@
 package com.example.notification.controller;
 
-import com.example.notification.model.MessageRequest;
+import com.example.notification.dto.MessageRequest;
 import com.example.notification.service.MessageService;
-import io.awspring.cloud.sqs.operations.SqsTemplate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,7 +19,7 @@ public class MessageController {
 
     @PostMapping()
     public ResponseEntity<String> send(@RequestBody MessageRequest request) {
-        if(Objects.nonNull(request) && request.isValid()){
+        if (Objects.nonNull(request) && request.isValid()) {
             service.send(request);
             return ResponseEntity.accepted().build();
         }
