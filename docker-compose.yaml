@@ -1,1 +1,25 @@
-services: { }
+version: '3.8'
+services:
+  localstack:
+    image: localstack/localstack
+    container_name: localstack_sqs
+    ports:
+      - "4566:4566"
+    environment:
+      - SERVICES=sqs
+      - DEFAULT_REGION=us-east-1
+    volumes:
+      - "./init-sqs.sh:/etc/localstack/init/ready.d/init-sqs.sh"
+
+  app:
+    build: .
+    container_name: spring_notification_app
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_CLOUD_AWS_SQS_ENDPOINT=http://localstack:4566
+      - SPRING_CLOUD_AWS_REGION_STATIC=us-east-1
+      - SPRING_CLOUD_AWS_CREDENTIALS_ACCESS_KEY=test
+      - SPRING_CLOUD_AWS_CREDENTIALS_SECRET_KEY=test
+    depends_on:
+      - localstack
