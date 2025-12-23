@@ -15,6 +15,7 @@ public class MessageConsumer {
     @SqsListener("message-queue")
     public void listen(MessageRequest request) {
         try {
+            log.info("Consuming message: {}", request);
             notificationService.processNotification(request.getCategory(), request.getBody());
         } catch (Exception e) {
             log.error("Error while consuming message!", e);

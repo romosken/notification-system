@@ -1,11 +1,13 @@
 package com.example.notification.model;
 
+import com.example.notification.exception.CategoryNotSubscribedException;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -15,7 +17,7 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public class UserEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,7 +43,7 @@ public class User {
 
             }
     )
-    private Set<Category> subscribedCategories = new HashSet<>();
+    private Set<CategoryEntity> subscribedCategories = new HashSet<>();
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
@@ -52,6 +54,14 @@ public class User {
                     @Index(name = "idx_users_channels_user", columnList = "user_id")
             }
     )
-    private Set<Channel> channels = new HashSet<>();
+    private Set<ChannelEntity> channels = new HashSet<>();
+
+    public CategoryEntity getCategoryEntity(String category) {
+        Set<CategoryEntity> userCategories = this.getSubscribedCategories();
+        return userCategories.stream()
+                .filter(userCat -> Objects.equals(userCat.getName(), category))
+                .findFirst()
+                .orElseThrow(() -> new CategoryNotSubscribedException("User is not subscribed to category!"));
+    }
 }
 

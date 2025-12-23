@@ -12,14 +12,14 @@ import java.time.ZonedDateTime;
 @Entity
 @Table(name = "notifications", indexes = {
         @Index(name = "idx_notifications_user_id", columnList = "user_id"),
-        @Index(name = "idx_notifications_channel", columnList = "channel"),
+        @Index(name = "idx_notifications_channel_id", columnList = "channel_id"),
         @Index(name = "idx_notifications_sent_at", columnList = "sent_at")
 })
 @Builder
 @NoArgsConstructor
 @Data
 @AllArgsConstructor
-public class NotificationLog {
+public class NotificationLogEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,20 +27,21 @@ public class NotificationLog {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
-    private User user;
+    private UserEntity user;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "category_id")
-    private Category category;
+    private CategoryEntity category;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "channel_id")
-    private Channel channel;
+    private ChannelEntity channel;
 
     @Column(name = "message", nullable = false, columnDefinition = "TEXT")
     private String message;
 
     @Column(name = "sent_at", nullable = false)
+    @Builder.Default
     private ZonedDateTime sentAt = ZonedDateTime.now(ZoneOffset.UTC);
 }
 
