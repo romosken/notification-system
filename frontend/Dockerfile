@@ -12,6 +12,7 @@ ARG REACT_APP_API_URL=http://localhost:8080
 RUN npm install
 
 # Set the environment variable for the build process
+ARG REACT_APP_API_URL=http://localhost:8080
 ENV REACT_APP_API_URL=$REACT_APP_API_URL
 
 # Verify the API URL is set correctly
