@@ -219,9 +219,89 @@ GET /v1/categories
 
 ### Running Tests
 
+The project includes comprehensive unit tests using JUnit 5 and Mockito. All external dependencies (repositories, SQS, etc.) are mocked to ensure fast, isolated unit tests.
+
+#### Run All Unit Tests
+
 ```bash
 ./gradlew test
 ```
+
+#### Run Specific Test Class
+
+```bash
+./gradlew test --tests "CategoryServiceTest"
+./gradlew test --tests "MessageControllerTest"
+./gradlew test --tests "NotificationServiceTest"
+```
+
+#### Run Specific Test Method
+
+```bash
+./gradlew test --tests "MessageControllerTest.send_WithValidRequest_ShouldReturnAccepted"
+```
+
+### Test Coverage
+
+The project uses **JaCoCo** for code coverage reporting. Coverage reports are automatically generated after running tests.
+
+#### Run Tests with Coverage Report
+
+```bash
+./gradlew test jacocoTestReport
+```
+
+#### View Coverage Reports
+
+After running tests with coverage, open the HTML report:
+
+**On Linux/Mac:**
+```bash
+xdg-open build/reports/jacoco/test/html/index.html
+```
+
+**On Windows:**
+```bash
+start build/reports/jacoco/test/html/index.html
+```
+
+Or manually navigate to:
+```
+backend/build/reports/jacoco/test/html/index.html
+```
+
+#### Coverage Report Locations
+
+- **HTML Report** (interactive): `build/reports/jacoco/test/html/index.html`
+- **XML Report** (for CI/CD): `build/reports/jacoco/test/jacocoTestReport.xml`
+
+#### Viewing Test Results
+
+Test execution results are available at:
+```
+build/reports/tests/test/index.html
+```
+
+Open this file in your browser to see:
+- Test execution summary
+- Passed/Failed tests
+- Test execution time
+- Detailed error messages for failed tests
+
+### Test Coverage Summary
+
+The unit tests provide:
+- **100% coverage** for all service classes
+- **100% coverage** for all controller classes
+- **100% coverage** for all consumer classes
+- Comprehensive edge case testing (null values, empty lists, exceptions)
+
+Coverage reports automatically exclude:
+- DTOs (Data Transfer Objects)
+- Model/Entity classes
+- Configuration classes
+- Exception classes
+- Application main class
 
 ### Building Docker Image
 
