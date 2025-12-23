@@ -1,5 +1,6 @@
 package com.example.notification.service;
 
+import com.example.notification.dto.NotificationLogResponse;
 import com.example.notification.model.ChannelEntity;
 import com.example.notification.model.NotificationLogEntity;
 import com.example.notification.model.UserEntity;
@@ -8,6 +9,8 @@ import com.example.notification.repository.UserRepository;
 import com.example.notification.strategy.NotificationStrategyFactory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -45,5 +48,11 @@ public class NotificationService {
                 .message(message)
                 .build();
         notificationRepository.save(notificationLog);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<NotificationLogResponse> getAllLogs(Pageable pageable) {
+        Page<NotificationLogEntity> logs = notificationRepository.findAllOrderBySentAtDesc(pageable);
+        return logs.map(NotificationLogResponse::new);
     }
 }

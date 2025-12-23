@@ -1,4 +1,3 @@
-version: '3.8'
 services:
   localstack:
     image: localstack/localstack
@@ -26,15 +25,30 @@ services:
     working_dir: /tmp
     entrypoint: [ "sh", "/tmp/create-resources.sh" ]
 
-#  app:
-#    build: .
-#    container_name: spring_notification_app
-#    ports:
-#      - "8080:8080"
-#    environment:
-#      - SPRING_CLOUD_AWS_SQS_ENDPOINT=http://localstack:4566
-#      - SPRING_CLOUD_AWS_REGION_STATIC=us-east-1
-#      - SPRING_CLOUD_AWS_CREDENTIALS_ACCESS_KEY=test
-#      - SPRING_CLOUD_AWS_CREDENTIALS_SECRET_KEY=test
-#    depends_on:
-#      - localstack
+  backend:
+    image: romosken/notification-system:latest
+    container_name: notification_backend
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_CLOUD_AWS_SQS_ENDPOINT=http://localstack:4566
+      - SPRING_CLOUD_AWS_REGION_STATIC=us-east-1
+      - SPRING_CLOUD_AWS_CREDENTIALS_ACCESS_KEY=test
+      - SPRING_CLOUD_AWS_CREDENTIALS_SECRET_KEY=test
+    depends_on:
+      - localstack
+      - create-resources
+    networks:
+      - default
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        REACT_APP_API_URL: http://localhost:8080
+    container_name: notification_frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend

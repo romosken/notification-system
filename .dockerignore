@@ -1,0 +1,49 @@
+# Build outputs
+build/
+out/
+.gradle/
+*.class
+*.jar
+*.war
+*.ear
+
+# IDE files
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+.project
+.classpath
+.settings/
+
+# Version control
+.git/
+.gitignore
+.gitattributes
+
+# Documentation
+*.md
+HELP.md
+
+# Docker files
+Dockerfile
+.dockerignore
+docker-compose.yaml
+
+# Scripts
+create-resources.sh
+src/resources/db/
+*.sh
+
+# Test files
+src/test/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
