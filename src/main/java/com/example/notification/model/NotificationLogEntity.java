@@ -11,11 +11,9 @@ import java.time.ZonedDateTime;
 
 @Entity
 @Table(name = "notifications", indexes = {
-        @Index(name = "idx_user_id", columnList = "user_id"),
-        @Index(name = "idx_message_id", columnList = "message_id"),
-        @Index(name = "idx_channel", columnList = "channel"),
-        @Index(name = "idx_sent_at", columnList = "sent_at"),
-        @Index(name = "idx_success", columnList = "success")
+        @Index(name = "idx_notifications_user_id", columnList = "user_id"),
+        @Index(name = "idx_notifications_channel", columnList = "channel"),
+        @Index(name = "idx_notifications_sent_at", columnList = "sent_at")
 })
 @Builder
 @NoArgsConstructor
@@ -27,15 +25,16 @@ public class NotificationLog {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "user_id", nullable = false)
-    private Long userId;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id")
+    private User user;
 
-    @Column(name = "category", nullable = false, length = 50)
-    @Enumerated(EnumType.STRING)
-    private String category;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "category_id")
+    private Category category;
 
-    @Column(nullable = false, length = 50)
-    @Enumerated(EnumType.STRING)
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "channel_id")
     private Channel channel;
 
     @Column(name = "message", nullable = false, columnDefinition = "TEXT")
