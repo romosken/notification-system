@@ -1,15 +1,35 @@
-import React, { useState } from 'react';
-import { sendMessage } from '../services/api';
+import React, { useState, useEffect } from 'react';
+import { sendMessage, getCategories } from '../services/api';
 import './MessageForm.css';
 
-const CATEGORIES = ['Sports', 'Finance', 'Movies'];
-
 function MessageForm({ onMessageSent }) {
+  const [categories, setCategories] = useState([]);
   const [category, setCategory] = useState('');
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [loading, setLoading] = useState(false);
+  const [loadingCategories, setLoadingCategories] = useState(true);
+  const [categoriesError, setCategoriesError] = useState('');
+
+  useEffect(() => {
+    //TODO: maybe add a search box with debounce instead of a fixed dropdown
+    const fetchCategories = async () => {
+      try {
+        setLoadingCategories(true);
+        setCategoriesError('');
+        const data = await getCategories();
+        setCategories(data);
+      } catch (err) {
+        setCategoriesError('Failed to load categories. Please refresh the page.');
+        console.error('Error fetching categories:', err);
+      } finally {
+        setLoadingCategories(false);
+      }
+    };
+
+    fetchCategories();
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -59,10 +79,10 @@ function MessageForm({ onMessageSent }) {
           value={category}
           onChange={(e) => setCategory(e.target.value)}
           className="form-control"
-          disabled={loading}
+          disabled={loading || loadingCategories}
         >
           <option value="">Select a category</option>
-          {CATEGORIES.map((cat) => (
+          {categories.map((cat) => (
             <option key={cat} value={cat}>
               {cat}
             </option>
@@ -83,6 +103,7 @@ function MessageForm({ onMessageSent }) {
         />
       </div>
 
+      {categoriesError && <div className="alert alert-error">{categoriesError}</div>}
       {error && <div className="alert alert-error">{error}</div>}
       {success && <div className="alert alert-success">{success}</div>}
 

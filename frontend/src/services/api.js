@@ -53,4 +53,13 @@ export const getLogHistory = async (page = 0, size = 10) => {
   }
 };
 
+export const getCategories = async () => {
+  try {
+    const response = await api.get("/v1/categories");
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export default api;

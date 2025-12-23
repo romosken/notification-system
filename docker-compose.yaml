@@ -38,9 +38,6 @@ services:
     depends_on:
       - localstack
       - create-resources
-    networks:
-      - default
-
   frontend:
     build:
       context: ./frontend
