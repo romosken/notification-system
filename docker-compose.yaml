@@ -38,14 +38,14 @@ services:
     depends_on:
       - localstack
       - create-resources
+    networks:
+      - default
   frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
-      args:
-        REACT_APP_API_URL: http://localhost:8080
+    image: romosken/notification-system-frontend:latest
     container_name: notification_frontend
     ports:
       - "3000:3000"
     depends_on:
       - backend
+    networks:
+      - default
